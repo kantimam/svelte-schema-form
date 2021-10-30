@@ -1,6 +1,7 @@
 <script>
   import { TextField } from 'smelte';
   export let element;
+  export let injectedProps;
   export let value;
   export let errors;
   export let setValue;
@@ -14,6 +15,8 @@
   label="Test label"
   outlined
   hint="Test hint"
+  error={errors}
+  {...injectedProps}
   on:input={(e) => {
     setValue(e.target.name, e.target.value);
   }}
