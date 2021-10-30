@@ -1,17 +1,30 @@
 <script>
   import { getContext } from 'svelte';
-  import { setContext } from 'svelte';
-  import { writable } from 'svelte/store';
 
-  setContext('formModelValues', writable({ a: 13 }));
-  setContext('formModelErrors', writable({ a: 13 }));
+  const inputErrors = {};
+  const inputValues = {};
   const schema = getContext('schema');
   const components = getContext('components');
+
+  function setErrors(inputName, value) {
+    inputErrors[inputName] = value;
+  }
+  function setValue(inputName, value) {
+    console.log(value); //  debounce this
+    inputValues[inputName] = value;
+  }
 </script>
 
 <form class="s-form">
   {#each schema.elements as element}
-    <svelte:component this={components[element.type]} {element} />
+    <svelte:component
+      this={components[element.type]}
+      {element}
+      {setValue}
+      {setErrors}
+      value={inputValues[element.name]}
+      errors={inputErrors[element.name]}
+    />
   {/each}
 
   <svelte:component
